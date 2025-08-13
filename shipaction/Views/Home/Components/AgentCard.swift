@@ -18,6 +18,29 @@ struct AgentCard: View {
     let onStartTapped: (Agent) -> Void
     let onDetailTapped: ((Agent) -> Void)?
     
+    // MARK: - Initializers (backward-compatible)
+    init(
+        agent: Agent,
+        onStartTapped: @escaping (Agent) -> Void,
+        onDetailTapped: ((Agent) -> Void)? = nil
+    ) {
+        self.agent = agent
+        self.onStartTapped = onStartTapped
+        self.onDetailTapped = onDetailTapped
+    }
+    
+    /// Backward-compatible initializer to preserve old call sites
+    init(
+        agent: Agent,
+        onStartTapped: @escaping (Agent) -> Void
+    ) {
+        self.init(
+            agent: agent,
+            onStartTapped: onStartTapped,
+            onDetailTapped: nil
+        )
+    }
+    
     // MARK: - State
     
     @State private var isPressed = false
