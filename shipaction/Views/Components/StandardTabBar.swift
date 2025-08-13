@@ -25,6 +25,7 @@ struct StandardTabBar: View {
     
     @Binding var selectedTab: MainTab
     @Namespace private var animation
+    let onSelect: (MainTab) -> Void = { _ in }
     
     // MARK: - Animation States
     @State private var isPressed = false
@@ -77,9 +78,7 @@ struct StandardTabBar: View {
         }
         .scaleEffect(isPressed && pressedTab == tab ? 0.95 : 1.0)
         .animation(.easeInOut(duration: 0.15), value: isPressed)
-        .onTapGesture {
-            selectTab(tab)
-        }
+        .onTapGesture { onSelect(tab) }
         .frame(maxWidth: .infinity)
         .contentShape(Rectangle())
     }
@@ -99,16 +98,8 @@ struct StandardTabBar: View {
     }
     
     // MARK: - Actions
-    
     private func selectTab(_ tab: MainTab) {
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0)) {
-            selectedTab = tab
-        }
-        
-            // Haptic feedback
-        let impactFeedback = UIImpactFeedbackGenerator(style: .light)
-            impactFeedback.impactOccurred()
-        }
+        onSelect(tab)
     }
 
 
@@ -134,7 +125,22 @@ struct StandardTabBarContainer<Content: View>: View {
                 .background(containerBackground)
             
             // Tab bar with background and proper positioning
-            StandardTabBar(selectedTab: $selectedTab)
+            StandardTabBar(
+                selectedTab: $selectedTab,
+                onSelect: { tab in
+                    withAnimation(
+                        .spring(
+                            response: 0.5,
+                            dampingFraction: 0.7,
+                            blendDuration: 0
+                        )
+                    ) {
+                        selectedTab = tab
+                    }
+                    let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+                    impactFeedback.impactOccurred()
+                }
+            )
                 .background(
                     Rectangle()
                         .fill(containerBackground)

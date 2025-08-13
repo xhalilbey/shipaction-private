@@ -63,7 +63,9 @@ struct ContentView: View {
             }
         }
         .animation(
-            .easeInOut(duration: AppConstants.Animation.transitionDuration),
+            .easeInOut(
+                duration: AppConstants.Animation.transitionDuration
+            ),
             value: startupViewModel?.currentFlow
         )
         .animation(

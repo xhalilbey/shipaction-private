@@ -30,11 +30,19 @@ struct MainView: View {
     // MARK: - Body
     
     var body: some View {
-        StandardTabBarContainer(selectedTab: $viewModel.selectedTab) {
+        StandardTabBarContainer(
+            selectedTab: $viewModel.selectedTab,
+            onSelectTab: { tab in viewModel.selectTab(tab) }
+        ) {
             // Tab content based on selection with proper ViewModels
             ZStack {
                 currentTabView
-                    .animation(.easeInOut(duration: AppConstants.Animation.tabSelectionDuration), value: viewModel.selectedTab)
+                    .animation(
+                        .easeInOut(
+                            duration: AppConstants.Animation.tabSelectionDuration
+                        ),
+                        value: viewModel.selectedTab
+                    )
             }
         }
         .navigationBarHidden(true)

@@ -21,6 +21,9 @@ final class HomeViewModel {
     
     /// Loading state for data fetching
     private(set) var isLoading: Bool = false
+
+    /// Prevent duplicate initial loads
+    private(set) var hasLoaded: Bool = false
     
     /// Error message for display
     private(set) var errorMessage: String?
@@ -108,12 +111,14 @@ final class HomeViewModel {
     /// Loads agents from the service
     @MainActor
     func loadAgents() async {
+        guard !isLoading && !hasLoaded else { return }
         isLoading = true
         errorMessage = nil
         
         do {
             agents = try await agentService.fetchAgents()
             filterAgents()
+            hasLoaded = true
         } catch {
             errorMessage = "Failed to load agents. Please try again."
             print("HomeViewModel.loadAgents error: \(error)")

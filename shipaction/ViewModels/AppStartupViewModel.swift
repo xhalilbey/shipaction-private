@@ -71,6 +71,9 @@ final class AppStartupViewModel {
     private let userRepository: UserRepository
     private let networkManager: NetworkMonitoring
     private let loggingService: LoggingServiceProtocol
+
+    /// Firebase auth state listener handle to manage lifecycle
+    private var authListener: AuthStateDidChangeListenerHandle?
     
     // MARK: - Initialization
     
@@ -133,7 +136,10 @@ final class AppStartupViewModel {
         currentState = .loadingUserData
         
         // Listen to Firebase Auth state changes for automatic state management
-        _ = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
+        if let authListener {
+            Auth.auth().removeStateDidChangeListener(authListener)
+        }
+        authListener = Auth.auth().addStateDidChangeListener { [weak self] _, user in
             Task { @MainActor in
                 await self?.handleAuthStateChange(user: user)
             }
@@ -231,6 +237,12 @@ final class AppStartupViewModel {
             }
         default:
             break
+        }
+    }
+
+    deinit {
+        if let authListener {
+            Auth.auth().removeStateDidChangeListener(authListener)
         }
     }
 }
