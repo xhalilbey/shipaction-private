@@ -345,10 +345,17 @@ private struct AgentListView: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(agents) { agent in
-                    AgentCard(agent: agent) { _ in
-                        // Placeholder action for search context
-                        print("Start tapped: \(agent.name)")
-                    }
+                    AgentCard(
+                        agent: agent,
+                        onStartTapped: { _ in
+                            // Placeholder action for search context
+                            print("Start tapped: \(agent.name)")
+                        },
+                        onDetailTapped: { agent in
+                            // TODO: Navigate to agent detail in search context
+                            print("Detail tapped: \(agent.name)")
+                        }
+                    )
                 }
             }
             .padding(16)

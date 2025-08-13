@@ -169,8 +169,6 @@ struct AgentCard: View {
                     .buttonStyle(PlainButtonStyle())
                     .accessibilityLabel(isSaved ? "Saved" : "Save")
 
-                    Spacer()
-                    
                     // Detail Info Button
                     if let onDetailTapped = onDetailTapped {
                         Button(action: {
@@ -190,6 +188,8 @@ struct AgentCard: View {
                         .buttonStyle(PlainButtonStyle())
                         .accessibilityLabel("View Details")
                     }
+
+                    Spacer()
 
                     // Start Arrow Button
                     Button(action: {
