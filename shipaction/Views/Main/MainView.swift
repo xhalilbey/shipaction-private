@@ -32,7 +32,9 @@ struct MainView: View {
     var body: some View {
         StandardTabBarContainer(
             selectedTab: $viewModel.selectedTab,
-            onSelectTab: { tab in viewModel.selectTab(tab) }
+            onSelectTab: { tab in
+                viewModel.selectTab(tab)
+            }
         ) {
             // Tab content based on selection with proper ViewModels
             ZStack {
