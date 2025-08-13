@@ -16,6 +16,7 @@ struct AgentCard: View {
     
     let agent: Agent
     let onStartTapped: (Agent) -> Void
+    let onDetailTapped: ((Agent) -> Void)?
     
     // MARK: - State
     
@@ -125,8 +126,8 @@ struct AgentCard: View {
                     }
                 }
                 
-                // Actions: Save (library) and Start
-                HStack(spacing: 12) {
+                // Actions: Save (library), Detail and Start
+                HStack(spacing: 8) {
                     // Save toggle using library icon (bookmark) – left side
                     Button(action: {
                         isSaved.toggle()
@@ -146,10 +147,31 @@ struct AgentCard: View {
                     .accessibilityLabel(isSaved ? "Saved" : "Save")
 
                     Spacer()
+                    
+                    // Detail Info Button
+                    if let onDetailTapped = onDetailTapped {
+                        Button(action: {
+                            onDetailTapped(agent)
+                            HapticFeedbackManager.shared.playLightImpact()
+                        }) {
+                            Image(systemName: "info.circle")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(colorScheme == .dark ? Color.white : AppConstants.Colors.primary)
+                                .frame(width: 32, height: 32)
+                                .background(
+                                    Circle()
+                                        .fill(colorScheme == .dark ? Color.white.opacity(0.06) : AppConstants.Colors.surface)
+                                )
+                                .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .accessibilityLabel("View Details")
+                    }
 
                     // Start Arrow Button
                     Button(action: {
                         onStartTapped(agent)
+                        HapticFeedbackManager.shared.playLightImpact()
                     }) {
                         Image(systemName: "arrow.right")
                             .font(.system(size: 14, weight: .semibold))
@@ -164,6 +186,7 @@ struct AgentCard: View {
                     .buttonStyle(PlainButtonStyle())
                     .scaleEffect(isPressed ? 0.9 : 1.0)
                     .animation(.easeInOut(duration: 0.1), value: isPressed)
+                    .accessibilityLabel("Start Agent")
                 }
             }
             .padding(12)
@@ -223,9 +246,15 @@ private extension AgentCard {
             GridItem(.flexible(), spacing: 16)
         ], spacing: 16) {
             ForEach(Agent.sampleAgents.prefix(4)) { agent in
-                AgentCard(agent: agent) { agent in
-                    print("Starting agent: \(agent.name)")
-                }
+                AgentCard(
+                    agent: agent,
+                    onStartTapped: { agent in
+                        print("Starting agent: \(agent.name)")
+                    },
+                    onDetailTapped: { agent in
+                        print("Showing details for: \(agent.name)")
+                    }
+                )
             }
         }
         .padding(16)

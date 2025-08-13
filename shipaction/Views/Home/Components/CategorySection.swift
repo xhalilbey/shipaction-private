@@ -15,6 +15,7 @@ struct CategorySection: View {
     let subtitle: String
     let agents: [Agent]
     let onAgentStart: (Agent) -> Void
+    let onAgentDetail: ((Agent) -> Void)?
     
     var body: some View {
         VStack(spacing: 16) {
@@ -39,9 +40,13 @@ struct CategorySection: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 12) {
                     ForEach(agents) { agent in
-                        AgentCard(agent: agent) { _ in
-                            onAgentStart(agent)
-                        }
+                        AgentCard(
+                            agent: agent,
+                            onStartTapped: { _ in
+                                onAgentStart(agent)
+                            },
+                            onDetailTapped: onAgentDetail
+                        )
                         .frame(width: 200) // Increased width to properly display all content including star ratings
                     }
                 }

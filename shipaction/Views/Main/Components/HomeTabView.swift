@@ -159,6 +159,10 @@ struct HomeTabView: View {
                 agents: agents,
                 onAgentStart: { agent in
                     viewModel.startAgent(agent)
+                },
+                onAgentDetail: { agent in
+                    // TODO: Navigate to agent detail view
+                    print("Show details for agent: \(agent.name)")
                 }
             )
         }
