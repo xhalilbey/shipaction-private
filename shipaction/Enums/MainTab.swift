@@ -41,7 +41,7 @@ enum MainTab: String, CaseIterable {
         case .library:
             return "Base"
         case .profile:
-            return "Profile"
+            return "Settings"
         }
     }
     
@@ -51,7 +51,7 @@ enum MainTab: String, CaseIterable {
     var iconName: String {
         switch self {
         case .home:
-            return "house.fill"
+            return "flame.fill"
         case .search:
             return "chevron.up.forward.2"
         case .ai:
@@ -59,7 +59,7 @@ enum MainTab: String, CaseIterable {
         case .library:
             return "square.grid.2x2"
         case .profile:
-            return "person.fill"
+            return "gearshape.fill"
         }
     }
 }
