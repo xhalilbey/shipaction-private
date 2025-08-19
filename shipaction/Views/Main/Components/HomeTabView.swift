@@ -16,8 +16,7 @@ struct HomeTabView: View {
     
     @Bindable var viewModel: HomeViewModel
     @State private var searchText = ""
-    // Force light visuals; ignore system color scheme
-    private var colorScheme: ColorScheme { .light }
+    @Environment(\.colorScheme) private var colorScheme
     
     // MARK: - Body
     
@@ -52,19 +51,10 @@ struct HomeTabView: View {
     
     private var searchSection: some View {
         HStack(spacing: 12) {
-            Group {
-        if colorScheme == .dark { // never true, kept for code clarity
-                    Image("white_logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } else {
-                    Image("logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(AppConstants.Colors.primary)
-                }
-            }
-            .frame(width: 32, height: 32)
+            Image(AppConstants.Colors.dynamicLogo(colorScheme))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 32, height: 32)
             
             HStack(spacing: 12) {
                 Image(systemName: "magnifyingglass")
@@ -200,17 +190,19 @@ struct HomeTabView: View {
 // MARK: - Dark Mode Helpers
 
 extension HomeTabView {
-    private var homeBackground: Color { AppConstants.Colors.background }
+    private var homeBackground: Color { 
+        AppConstants.Colors.dynamicBackground(colorScheme)
+    }
     private var searchIconColor: Color {
-        AppConstants.Colors.primary.opacity(0.6)
+        colorScheme == .dark ? Color.white.opacity(0.8) : Color.gray.opacity(0.7)
     }
     private var searchPromptColor: Color {
-        AppConstants.Colors.primary.opacity(0.5)
+        AppConstants.Colors.dynamicSecondaryText(colorScheme)
     }
     private var searchTextColor: Color {
-        AppConstants.Colors.primary
+        AppConstants.Colors.dynamicPrimaryText(colorScheme)
     }
     private var searchFieldBackground: Color {
-        AppConstants.Colors.primary.opacity(0.08)
+        colorScheme == .dark ? Color.white.opacity(0.1) : Color.gray.opacity(0.1)
     }
 }

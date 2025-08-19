@@ -25,17 +25,20 @@ final class ProfileViewModel {
     private let authenticationService: AuthenticationService
     private let userRepository: UserRepository
     private let navigationManager: NavigationManager
+    private let loggingService: LoggingServiceProtocol
     
     // MARK: - Initialization
     
     init(
         authenticationService: AuthenticationService,
         userRepository: UserRepository,
-        navigationManager: NavigationManager
+        navigationManager: NavigationManager,
+        loggingService: LoggingServiceProtocol
     ) {
         self.authenticationService = authenticationService
         self.userRepository = userRepository
         self.navigationManager = navigationManager
+        self.loggingService = loggingService
     }
     
     // MARK: - Actions
@@ -66,7 +69,7 @@ final class ProfileViewModel {
             navigationManager.navigateToOnboarding()
         } catch {
             errorMessage = "Sign out failed"
-            LoggingService.shared.logError(error, context: "ProfileViewModel.signOut")
+            loggingService.logError(error, context: "ProfileViewModel.signOut")
         }
         
         isLoading = false

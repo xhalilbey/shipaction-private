@@ -15,21 +15,23 @@ struct ProfileTabView: View {
     // MARK: - Properties
     
     @Bindable var viewModel: ProfileViewModel
-    private var colorScheme: ColorScheme { .light }
+    @Environment(\.colorScheme) private var colorScheme
     @State private var showingSignOutAlert = false
     
     // MARK: - Body
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
+                    header
                     profileHeader
+                    quickActions
                     profileOptions
                     signOutSection
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 20)
+                .padding(.top, 12)
             }
             .background(backgroundColor)
         }
@@ -53,13 +55,6 @@ struct ProfileTabView: View {
     
     private var profileHeader: some View {
         VStack(spacing: 16) {
-            HStack {
-                Text("Profile")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                Spacer()
-            }
-            
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(1.2)
@@ -89,6 +84,35 @@ struct ProfileTabView: View {
                     }
                 }
             }
+        }
+    }
+
+    private var header: some View {
+        HStack(spacing: 12) {
+            Image(AppConstants.Colors.dynamicLogo(colorScheme))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 28, height: 28)
+            Text("Profile")
+                .font(.system(size: 24, weight: .bold, design: .rounded))
+                .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
+            Spacer()
+            Button(action: {}) {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(AppConstants.Colors.primary)
+            }
+            .buttonStyle(.plain)
+            .allowsHitTesting(false)
+            .accessibilityLabel("Settings")
+        }
+    }
+
+    private var quickActions: some View {
+        HStack(spacing: 12) {
+            QuickActionButton(icon: "person.fill.viewfinder", title: "Verify")
+            QuickActionButton(icon: "creditcard.fill", title: "Billing")
+            QuickActionButton(icon: "lock.shield", title: "Security")
         }
     }
     
@@ -145,7 +169,6 @@ struct ProfileTabView: View {
                     
                     Spacer()
                 }
-                .padding(.horizontal, 16)
                 .padding(.vertical, 12)
             }
             .disabled(viewModel.isLoading)
@@ -178,18 +201,18 @@ struct ProfileOptionRow: View {
             HStack(spacing: 16) {
                 Image(systemName: icon)
                     .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(AppConstants.Colors.primary)
+                    .foregroundStyle(.white)
                     .frame(width: 24, height: 24)
                 
                 Text(title)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.white)
                 
                 Spacer()
                 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(.white.opacity(0.6))
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
@@ -200,14 +223,45 @@ struct ProfileOptionRow: View {
     }
 
     // MARK: - Tokens
-    private var primaryRowBackground: Color { AppConstants.Colors.primary.opacity(0.08) }
+         private var primaryRowBackground: Color { AppConstants.Colors.primary }
 }
 
 // MARK: - Tokens
 private extension ProfileTabView {
-    var backgroundColor: Color { AppConstants.Colors.background }
+    var backgroundColor: Color { 
+        AppConstants.Colors.dynamicBackground(colorScheme)
+    }
 
     var primaryTokenBackground: Color { AppConstants.Colors.primary.opacity(0.1) }
+}
+
+// MARK: - Quick Action Button
+private struct QuickActionButton: View {
+    let icon: String
+    let title: String
+    @Environment(\.colorScheme) private var colorScheme
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(AppConstants.Colors.primary)
+                .frame(width: 40, height: 40)
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(AppConstants.Colors.surface)
+                )
+                         Text(title)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(.white.opacity(0.8))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+                 .background(
+             RoundedRectangle(cornerRadius: 12, style: .continuous)
+                 .fill(AppConstants.Colors.primary)
+         )
+    }
 }
 
  

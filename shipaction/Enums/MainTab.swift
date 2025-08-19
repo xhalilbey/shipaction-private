@@ -16,7 +16,7 @@ import Foundation
 enum MainTab: String, CaseIterable {
     /// Home/dashboard with AI agents
     case home = "Home"
-    /// Search functionality
+    /// Footpath navigation
     case search = "Search"
     /// AI chat assistant
     case ai = "AI"
@@ -35,11 +35,11 @@ enum MainTab: String, CaseIterable {
         case .home:
             return "Home"
         case .search:
-            return "Search"
+            return "Footpath"
         case .ai:
-            return "AI"
+            return "Started"
         case .library:
-            return "Library"
+            return "Base"
         case .profile:
             return "Profile"
         }
@@ -53,11 +53,11 @@ enum MainTab: String, CaseIterable {
         case .home:
             return "house.fill"
         case .search:
-            return "magnifyingglass"
+            return "chevron.up.forward.2"
         case .ai:
-            return "sparkles"
+            return "square.3.layers.3d"
         case .library:
-            return "bookmark.fill"
+            return "square.grid.2x2"
         case .profile:
             return "person.fill"
         }

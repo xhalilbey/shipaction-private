@@ -50,7 +50,7 @@ struct FilterChip: View {
     let count: Int?
     let isSelected: Bool
     let action: () -> Void
-    private var colorScheme: ColorScheme { .light }
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         Button(action: action) {
@@ -79,20 +79,36 @@ struct FilterChip: View {
         .buttonStyle(PlainButtonStyle())
     }
 
-    // MARK: - Dark/Light Mode Aware Colors
+    // MARK: - Dynamic Colors for Dark/Light Mode
     private var chipBackground: Color {
-        if isSelected { return AppConstants.Colors.primary }
-        if colorScheme == .light { return AppConstants.Colors.primary.opacity(0.08) }
-        // Dark mode: token/background tone should match small badges (Save button style)
-        return AppConstants.Colors.darkTokenBackground
+        if isSelected { 
+            return AppConstants.Colors.turquoise 
+        }
+        // Dynamic background based on color scheme
+        return colorScheme == .dark ? 
+            Color.white.opacity(0.1) : 
+            Color.gray.opacity(0.15)
     }
+    
     private var chipTextColor: Color {
-        if isSelected { return .white }
-        return colorScheme == .dark ? Color.white.opacity(0.9) : AppConstants.Colors.primary
+        if isSelected { 
+            return .white 
+        }
+        // Dynamic text color based on color scheme
+        return AppConstants.Colors.dynamicPrimaryText(colorScheme)
     }
+    
     private var chipBorderColor: Color {
-        if isSelected { return .clear }
-        return .clear
+        if isSelected { 
+            return .clear 
+        }
+        // Light border for better visibility in light mode
+        return colorScheme == .dark ? 
+            .clear : 
+            Color.gray.opacity(0.2)
     }
-    private var chipBorderWidth: CGFloat { chipBorderColor == .clear ? 0 : 1 }
+    
+    private var chipBorderWidth: CGFloat { 
+        chipBorderColor == .clear ? 0 : 1 
+    }
 }

@@ -1,4 +1,4 @@
-# Shipaction - AI Agent Marketplace
+# Agenture - AI Agent Marketplace
 
 A modern iOS application for discovering and interacting with AI agents, built with SwiftUI and following Clean Architecture principles.
 

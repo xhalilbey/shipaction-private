@@ -51,7 +51,7 @@ final class HomeViewModel {
     
     // MARK: - Initialization
     
-    init(agentService: AgentServiceProtocol = MockAgentService()) {
+    init(agentService: AgentServiceProtocol) {
         self.agentService = agentService
     }
     

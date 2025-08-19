@@ -21,6 +21,9 @@ struct MainView: View {
     /// ViewModel managing main interface state and tab navigation
     @State private var viewModel: MainViewModel
     
+    /// Color scheme environment to adapt background colors
+    @Environment(\.colorScheme) private var colorScheme
+    
     // MARK: - Initialization
     
     init(viewModel: MainViewModel) {
@@ -75,7 +78,9 @@ struct MainView: View {
     }
     
     // MARK: - Background for color scheme
-    private var colorSchemeBackground: Color { AppConstants.Colors.background }
+    private var colorSchemeBackground: Color { 
+        AppConstants.Colors.dynamicBackground(colorScheme)
+    }
 
 }
 

@@ -9,113 +9,63 @@ import SwiftUI
 
 // MARK: - Library Tab View
 
-/// Saved items library tab view - Coming Soon
+/// Base tab view - Simple base page
 struct LibraryTabView: View {
     
     // MARK: - Properties
     
     @Bindable var viewModel: LibraryViewModel
-    private var colorScheme: ColorScheme { .light }
+    @Environment(\.colorScheme) private var colorScheme
     
     // MARK: - Body
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            Text("Çok yakında")
-                .font(.title)
-                .fontWeight(.medium)
-                .foregroundStyle(.secondary)
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(backgroundColor)
-    }
-}
-
-// MARK: - Saved Item Card
-
-struct SavedItemCard: View {
-    let item: SavedItem
-    let onTap: () -> Void
-    @Environment(\.colorScheme) private var colorScheme
-    
-    var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 16) {
-                // Item Icon
-                Image(systemName: iconForItemType(item.type))
-                    .font(.title2)
-                    .foregroundStyle(AppConstants.Colors.primary)
-                    .frame(width: 44, height: 44)
-            .background(primaryTokenBackground)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+        NavigationStack {
+            VStack(spacing: 0) {
+                header
                 
-                // Item Info
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(item.title)
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-                    
-                    Text(item.subtitle ?? "Saved item")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                    
-                    Text(formatDate(item.savedAt))
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                }
-                
-                Spacer()
-                
-                // More actions
-                Button(action: {}) {
-                    Image(systemName: "ellipsis")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
+                // Base Page Content
+                VStack {
+                    Spacer()
+                    Text("Base sayfası")
+                        .font(.system(size: 24, weight: .medium))
+                        .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
+                    Spacer()
                 }
             }
-            .padding(16)
-            .background(cardBackground)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(backgroundColor)
         }
-        .buttonStyle(PlainButtonStyle())
-    }
-    
-    private func iconForItemType(_ type: String) -> String {
-        switch type.lowercased() {
-        case "agent":
-            return "sparkles"
-        case "conversation":
-            return "bubble.left.and.bubble.right"
-        case "document":
-            return "doc.text"
-        default:
-            return "bookmark"
-        }
-    }
-    
-    private func formatDate(_ date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: date, relativeTo: Date())
-    }
-
-    // MARK: - Tokens
-    private var cardBackground: Color {
-        colorScheme == .dark ? AppConstants.Colors.darkTokenBackground : Color(.secondarySystemBackground)
-    }
-
-    private var primaryTokenBackground: Color {
-        colorScheme == .dark ? AppConstants.Colors.primary.opacity(0.16) : AppConstants.Colors.primary.opacity(0.1)
     }
 }
 
 // MARK: - Tokens
 private extension LibraryTabView {
-    var backgroundColor: Color { AppConstants.Colors.background }
+    var backgroundColor: Color { 
+        AppConstants.Colors.dynamicBackground(colorScheme)
+    }
+    
+    // MARK: - Header
+    var header: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 12) {
+                Group {
+                    Image(AppConstants.Colors.dynamicLogo(colorScheme))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(AppConstants.Colors.primary)
+                }
+                .frame(width: 28, height: 28)
+                .accessibilityHidden(true)
+
+                Text("Base")
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
+
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+        }
+        .padding(.top, 8)
+        .padding(.bottom, 8)
+    }
 }

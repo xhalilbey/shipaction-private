@@ -15,27 +15,123 @@ struct AIChatTabView: View {
     // MARK: - Properties
     
     @Bindable var viewModel: AIChatViewModel
-    private var colorScheme: ColorScheme { .light }
+    @Environment(\.colorScheme) private var colorScheme
+    
+    // MARK: - Animation State
+    @State private var headerVisible = false
+    @State private var firstCardVisible = false
+    @State private var secondCardVisible = false
+    @State private var thirdCardVisible = false
+    @State private var shine1: CGFloat = -0.2
+    @State private var shine2: CGFloat = -0.2
+    @State private var shine3: CGFloat = -0.2
     
     // MARK: - Body
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    header
+            VStack(spacing: 0) {
+                header
+                    .opacity(headerVisible ? 1 : 0)
+                    .offset(y: headerVisible ? 0 : -8)
+                    .animation(.easeInOut(duration: 0.35), value: headerVisible)
+                    .padding(.top, 20)
+                
+                Spacer()
+                
+                // Three premium cards centered on screen
+                VStack(spacing: 18) {
+                    hireAgentHeroCard
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 180)
+                        .opacity(firstCardVisible ? 1 : 0)
+                        .offset(y: firstCardVisible ? 0 : 20)
+                        .scaleEffect(firstCardVisible ? 1 : 0.95)
+                        .animation(
+                            .spring(response: 0.6, dampingFraction: 0.8, blendDuration: 0.5),
+                            value: firstCardVisible
+                        )
                     
-                    VStack(spacing: 12) {
-                        hireAgentCard
-                        selectAgentCard
-                    }
+                    createAgentHeroCard
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 180)
+                        .opacity(secondCardVisible ? 1 : 0)
+                        .offset(y: secondCardVisible ? 0 : 25)
+                        .scaleEffect(secondCardVisible ? 1 : 0.95)
+                        .animation(
+                            .spring(response: 0.65, dampingFraction: 0.8, blendDuration: 0.5),
+                            value: secondCardVisible
+                        )
+                        
+                    selectAgentHeroCard
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 180)
+                        .opacity(thirdCardVisible ? 1 : 0)
+                        .offset(y: thirdCardVisible ? 0 : 30)
+                        .scaleEffect(thirdCardVisible ? 1 : 0.95)
+                        .animation(
+                            .spring(response: 0.7, dampingFraction: 0.8, blendDuration: 0.5),
+                            value: thirdCardVisible
+                        )
                 }
-                .padding(.vertical, 16)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 20)
+                
+                Spacer() // Center the cards
             }
-            .scrollIndicators(.hidden)
             .background(backgroundColor)
             .tint(AppConstants.Colors.primary)
+            .onAppear {
+                // Enhanced staggered entrance with premium timing
+                withAnimation(.easeOut(duration: 0.4)) {
+                headerVisible = true
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    firstCardVisible = true
+                    }
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    withAnimation(.spring(response: 0.65, dampingFraction: 0.8)) {
+                    secondCardVisible = true
+                    }
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    withAnimation(.spring(response: 0.7, dampingFraction: 0.8)) {
+                        thirdCardVisible = true
+                    }
+                }
+                
+                // Premium shine animations with staggered delays
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    withAnimation(
+                        .linear(duration: 2.5)
+                        .repeatForever(autoreverses: false)
+                    ) { 
+                        shine1 = 1.3 
+                    }
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                withAnimation(
+                        .linear(duration: 3.0)
+                    .repeatForever(autoreverses: false)
+                    ) { 
+                        shine2 = 1.3 
+                    }
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                withAnimation(
+                        .linear(duration: 2.8)
+                    .repeatForever(autoreverses: false)
+                    ) { 
+                        shine3 = 1.3 
+                    }
+                }
+            }
         }
     }
 }
@@ -108,62 +204,68 @@ struct TypingIndicator: View {
 
 // MARK: - Tokens
 private extension AIChatTabView {
-    var backgroundColor: Color { AppConstants.Colors.background }
+    var backgroundColor: Color { 
+        AppConstants.Colors.dynamicBackground(colorScheme)
+    }
     var headerForegroundColor: Color { AppConstants.Colors.primary }
     
-    // Top bar same as Search
+    // Clean header with logo and brand
     var header: some View {
+        // Logo and brand section
         HStack(spacing: 12) {
-            Group {
-                if colorScheme == .dark { // never true
-                    Image("white_logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } else {
-                    Image("logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(AppConstants.Colors.primary)
-                }
-            }
+            Spacer(minLength: 0)
+            
+            Image(AppConstants.Colors.dynamicLogo(colorScheme))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
             .frame(width: 28, height: 28)
             .accessibilityHidden(true)
             
-            Text("Shipaction")
+            Text("Nexor")
                 .font(.system(size: 24, weight: .bold, design: .rounded))
-                .foregroundStyle(headerForegroundColor)
+                .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
                 .accessibilityIdentifier("brand_title")
             
-            Spacer()
-            
-            Button(action: {}) {
-                Image(systemName: "square.and.arrow.up")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(headerForegroundColor)
-            }
-            .buttonStyle(.plain)
-            .allowsHitTesting(false)
-            .accessibilityLabel("Share app")
-            .accessibilityHint("Coming soon")
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 4)
-        .padding(.vertical, 4)
+        .padding(.vertical, 8)
     }
     
-    // Cards
-    var hireAgentCard: some View {
-        AIActionCard(
+    // Three premium cards with continuous modern pattern
+    var hireAgentHeroCard: some View {
+        AILargeHeroCard(
             iconName: "briefcase.fill",
-            title: "Agent işe alma",
-            subtitle: "İhtiyacına uygun uzman bir Agent ile çalışmaya başla"
+            title: "Hire an Agent",
+            subtitle: "Start working with a specialist agent tailored to your needs",
+            background: AnyShapeStyle(Color(hex: "1D2426")),
+            shineProgress: shine1
         )
     }
     
-    var selectAgentCard: some View {
-        AIActionCard(
+    var createAgentHeroCard: some View {
+        AILargeHeroCard(
+            iconName: "plus.circle.fill",
+            title: "Create Your Agent",
+            subtitle: "Build a custom AI agent perfectly suited to your workflow",
+            background: AnyShapeStyle(Color(hex: "BADEDD")),
+            shineProgress: shine2,
+            prefersLightForeground: false
+        )
+    }
+    
+    var selectAgentHeroCard: some View {
+        AILargeHeroCard(
             iconName: "person.3.fill",
-            title: "Agent seç",
-            subtitle: "Kütüphaneden bir Agent seç ve hemen kullan"
+            title: "Choose an Agent",
+            subtitle: "Pick an agent from your library and start right away",
+            background: AnyShapeStyle(LinearGradient(
+                colors: [Color(hex: "F0F0F0"), Color(hex: "E5E5E5")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )),
+            shineProgress: shine3,
+            prefersLightForeground: false
         )
     }
 }
@@ -230,5 +332,98 @@ private struct AIActionCard: View {
     
     private var cardBackground: Color {
         colorScheme == .dark ? Color.white.opacity(0.08) : AppConstants.Colors.surfaceStrong
+    }
+}
+
+// MARK: - Large Hero Card (Brand-focused, modern pattern)
+private struct AILargeHeroCard: View {
+    let iconName: String
+    let title: String
+    let subtitle: String
+    var background: AnyShapeStyle? = nil
+    var shineProgress: CGFloat = -0.2
+    var prefersLightForeground: Bool = true
+    @Environment(\.colorScheme) private var colorScheme
+    
+    var body: some View {
+        ZStack {
+            // Clean modern background with subtle depth
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(background ?? AnyShapeStyle(heroBackground))
+                .overlay(
+                    // Subtle top light reflection
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.08),
+                                    Color.clear
+                                ],
+                                startPoint: .top,
+                                endPoint: .center
+                            )
+                        )
+                )
+                .shadow(
+                    color: Color.black.opacity(0.06),
+                    radius: 8,
+                    x: 0,
+                    y: 3
+                )
+            
+            // Content with clean layout
+            VStack(spacing: 16) {
+                HStack(alignment: .top, spacing: 16) {
+                    // Clean modern icon design
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(Color.white.opacity(0.15))
+                        .frame(width: 56, height: 56)
+                        .overlay(
+                            Image(systemName: iconName)
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundStyle(foreground)
+                    )
+                
+                    // Text content with clean typography
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(title)
+                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundStyle(foreground)
+                        .lineLimit(1)
+                        
+                    Text(subtitle)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(foregroundSecondary)
+                        .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                }
+                
+                Spacer()
+                }
+                
+                // Simple action indicator
+                HStack {
+                    Spacer()
+                    Image(systemName: "arrow.right")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(foregroundSecondary)
+                }
+            }
+            .padding(20)
+        }
+    }
+    
+    private var heroBackground: AnyShapeStyle { AnyShapeStyle(Color(hex: "0A1213")) }
+    
+    // Deprecated custom overlay replaced by ModernCardOverlay
+
+    private var foreground: Color {
+        prefersLightForeground ? .white : AppConstants.Colors.primary
+    }
+    private var foregroundSecondary: Color {
+        prefersLightForeground ? Color.white.opacity(0.85) : AppConstants.Colors.primary.opacity(0.75)
+    }
+    private var foregroundBase: Color {
+        prefersLightForeground ? .white : AppConstants.Colors.primary
     }
 }

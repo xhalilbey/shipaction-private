@@ -17,6 +17,7 @@ struct UberSignInSheet: View {
         self._viewModel = State(initialValue: viewModel)
     }
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @FocusState private var focusedField: Field?
     
     enum Field {
@@ -28,7 +29,7 @@ struct UberSignInSheet: View {
             GeometryReader { geometry in
                 ZStack(alignment: .top) {
                     // Background
-                    AppConstants.Colors.background
+                    AppConstants.Colors.dynamicBackground(colorScheme)
                         .ignoresSafeArea(.all)
                     
                     ScrollView {
@@ -51,11 +52,11 @@ struct UberSignInSheet: View {
                     Text("Welcome Back")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
                     
                     Text("Sign in to your PayAction account")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppConstants.Colors.dynamicSecondaryText(colorScheme))
                         .multilineTextAlignment(.center)
                 }
             }
@@ -92,7 +93,7 @@ struct UberSignInSheet: View {
                     .frame(height: 50)
                     .background(
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(AppConstants.Colors.background)
+                            .fill(AppConstants.Colors.dynamicBackground(colorScheme))
                             .stroke(AppConstants.Colors.primary, lineWidth: 1.5)
                     )
                 }

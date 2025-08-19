@@ -84,16 +84,17 @@ final class DependencyContainer: DependencyContainerProtocol {
         return ProfileViewModel(
             authenticationService: authenticationService,
             userRepository: userRepository,
-            navigationManager: navigationManager
+            navigationManager: navigationManager,
+            loggingService: loggingService
         )
     }
     
     func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel()
+        return HomeViewModel(agentService: MockAgentService())
     }
     
     func makeSearchViewModel() -> SearchViewModel {
-        return SearchViewModel()
+        return SearchViewModel(agentService: MockAgentService())
     }
     
     func makeAIChatViewModel() -> AIChatViewModel {

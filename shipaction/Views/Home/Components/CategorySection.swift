@@ -17,6 +17,8 @@ struct CategorySection: View {
     let onAgentStart: (Agent) -> Void
     let onAgentDetail: ((Agent) -> Void)?
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         VStack(spacing: 16) {
             // Section Header
@@ -25,11 +27,11 @@ struct CategorySection: View {
                     Text(title)
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
                     
                     Text(subtitle)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppConstants.Colors.dynamicSecondaryText(colorScheme))
                 }
                 
                 Spacer()

@@ -157,14 +157,17 @@ struct AppConstants {
     
     /// Consistent color palette for the application
     struct Colors {
-        /// Primary brand color - Dark Teal (#014140)
-        static let primary = Color(hex: "014140")
+        /// Primary brand color - Dark Teal (#2E565E)
+        static let primary = Color(hex: "2E565E")
         
         /// Secondary brand color
         static let secondary = Color(.systemGray)
         
         /// Accent color for highlights
         static let accent = Color.blue
+        
+        /// Tab bar selection background color (purple theme)
+        static let tabSelectionBackground = Color(hex: "2E565E")
         
         /// Success color for positive actions
         static let success = Color(hex: "28A745")
@@ -175,8 +178,8 @@ struct AppConstants {
         /// Error color for problems
         static let error = Color.red
         
-        /// Background color for main content (light)
-        static let background = Color(hex: "FDFDF7")
+        /// Background color for main content (dark mode)
+        static let background = Color(hex: "191919")
 
         /// Background color for dark mode (requested tone)
         static let darkBackground = Color(hex: "091717")
@@ -221,6 +224,68 @@ struct AppConstants {
         /// Dark mode token background for badges/labels (matches Save button background tone)
         /// Slightly reduced contrast per design feedback
         static let darkTokenBackground = Color.white.opacity(0.05)
+        
+        /// Dark mode primary card gradient for "Hire an Agent" - modern teal gradient
+        static let darkPrimaryCardGradient = LinearGradient(
+            colors: [Color(hex: "2E565E"), Color(hex: "1A3A3F")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        
+        /// Dark mode secondary card color for "Choose an Agent" - subtle dark surface
+        static let darkSecondaryCard = Color(hex: "1D2426")
+        
+        /// Dark mode card overlay color for depth effects
+        static let darkCardOverlay = Color.white.opacity(0.08)
+        
+        /// Dark mode accent color for highlights and selections
+        static let darkAccent = Color(hex: "4A7C87")
+        
+        /// Brand turquoise color - primary brand color
+        static let turquoise = Color(hex: "1FB8CD")
+        
+        // MARK: - Light Mode Colors
+        
+        /// Light mode background color
+        static let lightBackground = Color(hex: "FBFAF4")
+        
+        /// Light mode secondary background for cards/sections
+        static let lightSecondaryBackground = Color(hex: "F8F8F5")
+        
+        /// Light mode text colors
+        static let lightPrimaryText = Color(hex: "1A1A1A")
+        static let lightSecondaryText = Color(hex: "666666")
+        
+        /// Light mode card backgrounds
+        static let lightCardBackground = Color.white
+        static let lightCardSecondary = Color(hex: "F8F6E9")
+        
+        // MARK: - Dynamic Colors (Color Scheme Aware)
+        
+        /// Dynamic background that adapts to color scheme
+        static func dynamicBackground(_ colorScheme: ColorScheme) -> Color {
+            colorScheme == .dark ? background : lightBackground
+        }
+        
+        /// Dynamic text that adapts to color scheme
+        static func dynamicPrimaryText(_ colorScheme: ColorScheme) -> Color {
+            colorScheme == .dark ? Color.white : lightPrimaryText
+        }
+        
+        /// Dynamic secondary text that adapts to color scheme
+        static func dynamicSecondaryText(_ colorScheme: ColorScheme) -> Color {
+            colorScheme == .dark ? Color.white.opacity(0.7) : lightSecondaryText
+        }
+        
+        /// Dynamic card background that adapts to color scheme
+        static func dynamicCardBackground(_ colorScheme: ColorScheme) -> Color {
+            colorScheme == .dark ? Color.white.opacity(0.08) : lightCardBackground
+        }
+        
+        /// Dynamic logo that adapts to color scheme
+        static func dynamicLogo(_ colorScheme: ColorScheme) -> String {
+            colorScheme == .dark ? "white_logo" : "logo"
+        }
     }
     
     // MARK: - Typography

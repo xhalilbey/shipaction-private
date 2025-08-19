@@ -21,6 +21,10 @@ final class LibraryViewModel {
     private(set) var errorMessage: String?
     private var hasLoaded = false
     
+    // Selection mode for batch actions
+    private(set) var isSelectionMode = false
+    private(set) var selectedIds = Set<String>()
+    
     // MARK: - Computed Properties
     
     var isEmpty: Bool {
@@ -116,5 +120,26 @@ final class LibraryViewModel {
     
     func clearError() {
         errorMessage = nil
+    }
+    
+    // MARK: - Selection API
+    func toggleSelectionMode() {
+        isSelectionMode.toggle()
+        if !isSelectionMode { selectedIds.removeAll() }
+    }
+    
+    func toggleSelection(for item: SavedItem) {
+        if selectedIds.contains(item.id) {
+            selectedIds.remove(item.id)
+        } else {
+            selectedIds.insert(item.id)
+        }
+    }
+    
+    func deleteSelected() {
+        guard !selectedIds.isEmpty else { return }
+        savedItems.removeAll { selectedIds.contains($0.id) }
+        selectedIds.removeAll()
+        // TODO: Persist deletions to repository when backend is ready
     }
 }

@@ -19,6 +19,7 @@ struct UberCreateAccountSheet: View {
         self._viewModel = State(initialValue: viewModel)
     }
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @FocusState private var focusedField: Field?
     
     enum Field {
@@ -30,7 +31,7 @@ struct UberCreateAccountSheet: View {
             GeometryReader { geometry in
                 ZStack(alignment: .top) {
                     // Background
-                    AppConstants.Colors.background
+                    AppConstants.Colors.dynamicBackground(colorScheme)
                         .ignoresSafeArea(.all)
                     
                     ScrollView {

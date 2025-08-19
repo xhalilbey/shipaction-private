@@ -40,16 +40,26 @@ final class SearchViewModel {
     private(set) var errorMessage: String?
     private var hasLoaded = false
     
+    /// Cache for expensive computed properties
+    private var categoriesCache: [(category: AgentCategory, count: Int)]?
+    private var lastAgentsCount: Int = -1
+    
     /// Available categories with counts (computed from fetched agents)
     var availableCategories: [(category: AgentCategory, count: Int)] {
-        let counts = Dictionary(grouping: agents, by: { $0.category })
-            .mapValues { $0.count }
-        return AgentCategory.allCases.compactMap { category in
-            if let c = counts[category], c > 0 { 
-                return (category, c) 
-            }
-            return nil
-        }.sorted { $0.count > $1.count }
+        // Check if cache is valid
+        if lastAgentsCount != agents.count {
+            // Recompute and cache
+            let counts = Dictionary(grouping: agents, by: { $0.category })
+                .mapValues { $0.count }
+            categoriesCache = AgentCategory.allCases.compactMap { category in
+                if let c = counts[category], c > 0 { 
+                    return (category, c) 
+                }
+                return nil
+            }.sorted { $0.count > $1.count }
+            lastAgentsCount = agents.count
+        }
+        return categoriesCache ?? []
     }
     
     var isEmpty: Bool {
@@ -64,7 +74,7 @@ final class SearchViewModel {
     
     // MARK: - Init
     
-    init(agentService: AgentServiceProtocol = MockAgentService()) {
+    init(agentService: AgentServiceProtocol) {
         self.agentService = agentService
         setupSearchDebouncing()
     }

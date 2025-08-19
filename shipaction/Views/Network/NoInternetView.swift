@@ -26,21 +26,17 @@ struct NoInternetView: View {
     /// Optional retry callback to let parent refresh state
     let onRetry: (() -> Void)?
     
+    /// Color scheme environment for dynamic background
+    @Environment(\.colorScheme) private var colorScheme
+    
     // MARK: - Body
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Background gradient
-                LinearGradient(
-                    colors: [
-                        Color(.systemBackground),
-                        Color(.systemBackground).opacity(0.8)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+                // Dynamic app background consistent with app (non-onboarding)
+                AppConstants.Colors.dynamicBackground(colorScheme)
+                    .ignoresSafeArea()
                 
                 // Main content
                 VStack(spacing: 32) {
