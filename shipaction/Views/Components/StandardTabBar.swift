@@ -179,7 +179,23 @@ struct StandardTabBar: View {
                 options: .nonRepeating,
                 value: selectedTab == tab
             )
-
+            // 🔥 Flame animation for Home tab - pulsing flame effect
+            .symbolEffect(
+                .pulse.byLayer,
+                options: selectedTab == tab && tab == .home ? .speed(0.8).repeating : .nonRepeating,
+                value: selectedTab == tab && tab == .home
+            )
+            .symbolEffect(
+                .variableColor.iterative.dimInactiveLayers,
+                options: selectedTab == tab && tab == .home ? .speed(1.2).repeating : .nonRepeating,
+                value: selectedTab == tab && tab == .home
+            )
+            // ⚙️ Gear rotation for Settings tab - smooth spinning gear
+            .symbolEffect(
+                .rotate.byLayer,
+                options: selectedTab == tab && tab == .profile ? .speed(0.4).repeating : .nonRepeating,
+                value: selectedTab == tab && tab == .profile
+            )
     }
 
     @ViewBuilder
