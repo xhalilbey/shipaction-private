@@ -53,42 +53,35 @@ struct SearchTabView: View {
     // MARK: - Subviews
     
     private var header: some View {
-        VStack(spacing: 16) {
-            // Logo and brand section
+        HStack(spacing: 12) {
+            // Logo and title - left aligned
             HStack(spacing: 12) {
-                Spacer(minLength: 0)
-                
                 Image(AppConstants.Colors.dynamicLogo(colorScheme))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 28, height: 28)
                     .accessibilityHidden(true)
                 
-                Text("Nexor")
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                Text("Browse by Category")
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
-                    .accessibilityIdentifier("brand_title")
-                
-                Spacer(minLength: 0)
-                
-                // Share button (placeholder, inactive for now) - subtle, no fill
-                Button(action: {}) {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
-                }
-                .buttonStyle(.plain)
-                .allowsHitTesting(false) // inactive for now
-                .accessibilityLabel("Share app")
-                .accessibilityHint("Coming soon")
             }
-            .padding(.horizontal, 4)
-            .padding(.vertical, 8)
             
-            Text("Browse by Category")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
+            
+            // Share button (placeholder, inactive for now) - subtle, no fill
+            Button(action: {}) {
+                Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
+            }
+            .buttonStyle(.plain)
+            .allowsHitTesting(false) // inactive for now
+            .accessibilityLabel("Share app")
+            .accessibilityHint("Coming soon")
         }
+        .padding(.horizontal, 4)
+        .padding(.vertical, 8)
     }
     
     @ViewBuilder
