@@ -63,7 +63,7 @@ struct SearchTabView: View {
                     .accessibilityHidden(true)
                 
                 Text("Browse by Category")
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
                     .foregroundStyle(AppConstants.Colors.dynamicPrimaryText(colorScheme))
             }
             
