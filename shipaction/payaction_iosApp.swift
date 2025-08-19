@@ -65,8 +65,7 @@ struct payaction_iosApp: App {
                 .environment(dependencyContainer ?? DependencyContainer(navigationManager: navigationManager))
                 // Global tint for navigation/back controls
                 .tint(AppConstants.Colors.primary)
-                // Force light mode throughout the app regardless of system setting
-                .preferredColorScheme(.light)
+                // Follow system color scheme preference (dark/light mode)
                 .onAppear {
                     if dependencyContainer == nil {
                         dependencyContainer = DependencyContainer(navigationManager: navigationManager)
