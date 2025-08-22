@@ -69,7 +69,67 @@ struct FilterChip: View {
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(chipBackground)
+                    .fill(isSelected ? Color.clear : (colorScheme == .dark ? Color.white.opacity(0.1) : Color.gray.opacity(0.15)))
+                    .overlay(
+                        // Multi-color gradient overlay for selected state
+                        Group {
+                            if isSelected {
+                                ZStack {
+                                    // Base subtle background
+                                    Color(hex: "1E1B4B").opacity(0.3)
+                                    
+                                    // RED - Top area
+                                    RadialGradient(
+                                        colors: [
+                                            Color(hex: "DC2626").opacity(0.8),
+                                            Color(hex: "EF4444").opacity(0.4),
+                                            Color.clear
+                                        ],
+                                        center: UnitPoint(x: 0.7, y: 0.15),
+                                        startRadius: 5,
+                                        endRadius: 40
+                                    )
+                                    
+                                    // ORANGE - Right side
+                                    RadialGradient(
+                                        colors: [
+                                            Color(hex: "EA580C").opacity(0.7),
+                                            Color(hex: "F97316").opacity(0.5),
+                                            Color.clear
+                                        ],
+                                        center: UnitPoint(x: 0.85, y: 0.5),
+                                        startRadius: 8,
+                                        endRadius: 35
+                                    )
+                                    
+                                    // YELLOW - Bottom right
+                                    RadialGradient(
+                                        colors: [
+                                            Color(hex: "CA8A04").opacity(0.8),
+                                            Color(hex: "EAB308").opacity(0.6),
+                                            Color.clear
+                                        ],
+                                        center: UnitPoint(x: 0.75, y: 0.85),
+                                        startRadius: 6,
+                                        endRadius: 38
+                                    )
+                                    
+                                    // GREEN - Bottom left
+                                    RadialGradient(
+                                        colors: [
+                                            Color(hex: "16A34A").opacity(0.8),
+                                            Color(hex: "22C55E").opacity(0.5),
+                                            Color.clear
+                                        ],
+                                        center: UnitPoint(x: 0.25, y: 0.8),
+                                        startRadius: 7,
+                                        endRadius: 42
+                                    )
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                            }
+                        }
+                    )
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
                             .stroke(chipBorderColor, lineWidth: chipBorderWidth)
@@ -80,15 +140,6 @@ struct FilterChip: View {
     }
 
     // MARK: - Dynamic Colors for Dark/Light Mode
-    private var chipBackground: Color {
-        if isSelected { 
-            return AppConstants.Colors.turquoise 
-        }
-        // Dynamic background based on color scheme
-        return colorScheme == .dark ? 
-            Color.white.opacity(0.1) : 
-            Color.gray.opacity(0.15)
-    }
     
     private var chipTextColor: Color {
         if isSelected { 

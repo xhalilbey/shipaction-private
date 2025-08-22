@@ -89,7 +89,7 @@ struct AgentCard: View {
     private var agentLogoView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(tokenBackground)
+                .fill(Color.clear) // Transparent background
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .stroke(tokenStroke, lineWidth: 1)
@@ -125,7 +125,7 @@ struct AgentCard: View {
         HStack(spacing: 4) {
             Image(systemName: agent.category.iconName)
                 .font(.system(size: 9, weight: .semibold))
-                .foregroundStyle(textPrimary)
+                .foregroundStyle(Color.white)
             
             Text(agent.category.displayName)
                 .font(.system(size: 10, weight: .semibold))
@@ -135,7 +135,7 @@ struct AgentCard: View {
         .padding(.vertical, 4)
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(tokenBackground)
+                .fill(Color.clear) // Transparent background
                 .overlay(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .stroke(tokenStroke, lineWidth: 1)
@@ -178,12 +178,11 @@ struct AgentCard: View {
             .padding(.vertical, 4)
             .background(
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(tokenBackground)
+                    .fill(Color.clear) // Transparent background
                     .overlay(
                         RoundedRectangle(cornerRadius: 6, style: .continuous)
                             .stroke(tokenStroke, lineWidth: 1)
                     )
-                    .shadow(color: colorScheme == .dark ? .black.opacity(0.05) : .clear, radius: 1, x: 0, y: 0.5)
             )
     }
     
@@ -203,7 +202,7 @@ struct AgentCard: View {
             isSaved.toggle()
             HapticFeedbackManager.shared.playSelection()
         }) {
-            Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+            Image(systemName: isSaved ? "star.fill" : "star")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(actionIconColor)
                 .frame(width: 36, height: 36)
@@ -211,7 +210,7 @@ struct AgentCard: View {
                 .shadow(color: colorScheme == .dark ? .black.opacity(0.1) : .clear, radius: 4, x: 0, y: 2)
         }
         .buttonStyle(PlainButtonStyle())
-        .accessibilityLabel(isSaved ? "Saved" : "Save")
+        .accessibilityLabel(isSaved ? "Starred" : "Star")
     }
     
     // MARK: - Detail Button
@@ -228,13 +227,12 @@ struct AgentCard: View {
                     .frame(width: 32, height: 32)
                     .background(
                         Circle()
-                            .fill(tokenBackground)
+                            .fill(Color.clear) // Transparent background
                             .overlay(
                                 Circle()
                                     .stroke(tokenStroke, lineWidth: 1)
                             )
                     )
-                    .shadow(color: colorScheme == .dark ? .black.opacity(0.1) : .clear, radius: 4, x: 0, y: 2)
             }
             .buttonStyle(PlainButtonStyle())
             .accessibilityLabel("View details")
@@ -263,18 +261,94 @@ struct AgentCard: View {
     // MARK: - Action Button Background
     private var actionButtonBackground: some View {
         Circle()
-            .fill(tokenBackground)
+            .fill(Color.clear) // Transparent background
             .overlay(
                 Circle()
                     .stroke(tokenStroke, lineWidth: 1)
             )
-            .shadow(color: colorScheme == .dark ? .black.opacity(0.1) : .clear, radius: 2, x: 0, y: 1)
     }
     
     // MARK: - Card Background
     private var cardBackgroundView: some View {
         RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .fill(modernCardBackground)
+            .overlay(
+                // Balanced color distribution - Red, Green, Yellow, Orange prominent
+                ZStack {
+                    // Base subtle background
+                    Color(hex: "1E1B4B").opacity(0.3) // Deep purple base
+                    
+                    // RED - Top area (more prominent)
+                    RadialGradient(
+                        colors: [
+                            Color(hex: "DC2626").opacity(0.8), // Strong red
+                            Color(hex: "EF4444").opacity(0.4),
+                            Color.clear
+                        ],
+                        center: UnitPoint(x: 0.7, y: 0.15),
+                        startRadius: 20,
+                        endRadius: 180
+                    )
+                    
+                    // ORANGE - Right side (prominent)
+                    RadialGradient(
+                        colors: [
+                            Color(hex: "EA580C").opacity(0.7), // Strong orange
+                            Color(hex: "F97316").opacity(0.5),
+                            Color.clear
+                        ],
+                        center: UnitPoint(x: 0.85, y: 0.5),
+                        startRadius: 25,
+                        endRadius: 170
+                    )
+                    
+                    // YELLOW - Bottom right (prominent)
+                    RadialGradient(
+                        colors: [
+                            Color(hex: "CA8A04").opacity(0.8), // Strong yellow
+                            Color(hex: "EAB308").opacity(0.6),
+                            Color.clear
+                        ],
+                        center: UnitPoint(x: 0.75, y: 0.85),
+                        startRadius: 30,
+                        endRadius: 160
+                    )
+                    
+                    // GREEN - Bottom left (prominent)
+                    RadialGradient(
+                        colors: [
+                            Color(hex: "16A34A").opacity(0.8), // Strong green
+                            Color(hex: "22C55E").opacity(0.5),
+                            Color.clear
+                        ],
+                        center: UnitPoint(x: 0.25, y: 0.8),
+                        startRadius: 35,
+                        endRadius: 175
+                    )
+                    
+                    // Purple accent - Top left (supporting)
+                    RadialGradient(
+                        colors: [
+                            Color(hex: "7C3AED").opacity(0.6), // Supporting purple
+                            Color.clear
+                        ],
+                        center: UnitPoint(x: 0.15, y: 0.2),
+                        startRadius: 15,
+                        endRadius: 120
+                    )
+                    
+                    // Blue accent - Left side (supporting)
+                    RadialGradient(
+                        colors: [
+                            Color(hex: "2563EB").opacity(0.5), // Supporting blue
+                            Color.clear
+                        ],
+                        center: UnitPoint(x: 0.1, y: 0.6),
+                        startRadius: 20,
+                        endRadius: 130
+                    )
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            )
             .overlay(innerGlowOverlay)
             .overlay(borderGlowOverlay)
             .shadow(
@@ -351,9 +425,7 @@ extension AgentPrice {
 
 // MARK: - Dark Mode Helpers
 private extension AgentCard {
-    var cardBackground: LinearGradient { 
-        LinearGradient(colors: [Color(hex: "20808D"), Color(hex: "20808D").opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing)
-    }
+    // Remove the problematic cardBackground property since we're using it directly in cardBackgroundView
     
     var modernCardBackground: Color {
         colorScheme == .dark ? 
@@ -361,40 +433,34 @@ private extension AgentCard {
             AppConstants.Colors.lightCardSecondary
     }
     var tokenBackground: Color { 
-        colorScheme == .dark ? 
-            Color.white.opacity(0.1) : 
-            Color.white.opacity(0.4)
+        // Glass-like background for tokens on hero gradient
+        Color.white.opacity(0.15)
     }
     var tokenStroke: Color { 
-        colorScheme == .dark ? 
-            Color.white.opacity(0.2) : 
-            Color.white.opacity(0.6)
+        // Subtle glass stroke for tokens on hero gradient  
+        Color.white.opacity(0.25)
     }
     var textPrimary: Color { 
-        colorScheme == .dark ? 
-            Color.white : 
-            AppConstants.Colors.lightPrimaryText
+        // Use white text on hero-style gradient background like the original
+        Color.white
     }
     var textSecondary: Color { 
-        colorScheme == .dark ? 
-            Color.white.opacity(0.95) : 
-            AppConstants.Colors.lightSecondaryText.opacity(0.9)
+        // Use white text with opacity on hero-style gradient background
+        Color.white.opacity(0.9)
     }
     var accentText: Color { 
-        colorScheme == .dark ? 
-            Color.white.opacity(0.98) : 
-            AppConstants.Colors.lightPrimaryText.opacity(0.95)
+        // Use white accent text on hero gradient background
+        Color.white.opacity(0.95)
     }
     var tagTextColor: Color { 
-        colorScheme == .dark ? 
-            Color.white.opacity(0.95) : 
-            Color.black.opacity(0.8)
+        // Use white tag text on hero gradient background
+        Color.white.opacity(0.9)
     }
     var actionIconColor: Color {
-        colorScheme == .dark ? 
-            Color(hex: "1FB8CD") : 
-            Color.black.opacity(0.8)
+        // Use white action icons on hero gradient background
+        Color.white
     }
+
 }
 
 // MARK: - Preview

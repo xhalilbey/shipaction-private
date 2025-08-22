@@ -286,6 +286,204 @@ extension Agent {
             isBestPerforming: true,
             createdAt: Date().addingTimeInterval(-86400 * 22),
             updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        // More Productivity Agents
+        Agent(
+            id: "agent-9",
+            name: "FocusFlow",
+            description: "Time tracking and focus enhancement with AI-powered insights",
+            category: .productivity,
+            logoURL: nil,
+            rating: 4.5,
+            reviewCount: 89,
+            price: .subscription(7, .monthly),
+            tags: ["Time Tracking", "Focus", "Insights"],
+            isRecommended: true,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 12),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        Agent(
+            id: "agent-10",
+            name: "MeetingMaster",
+            description: "Smart meeting scheduling and note-taking assistant",
+            category: .productivity,
+            logoURL: nil,
+            rating: 4.8,
+            reviewCount: 134,
+            price: .subscription(12, .monthly),
+            tags: ["Meetings", "Scheduling", "Notes"],
+            isRecommended: false,
+            isBestPerforming: true,
+            createdAt: Date().addingTimeInterval(-86400 * 25),
+            updatedAt: Date().addingTimeInterval(-86400 * 2)
+        ),
+        
+        // More Social Media Agents
+        Agent(
+            id: "agent-11",
+            name: "ContentCreator Pro",
+            description: "AI-powered video and image content creation for social platforms",
+            category: .creative,
+            logoURL: nil,
+            rating: 4.6,
+            reviewCount: 178,
+            price: .subscription(18, .monthly),
+            tags: ["Video", "Images", "Creation"],
+            isRecommended: true,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 18),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        Agent(
+            id: "agent-12",
+            name: "HashtagOptimizer",
+            description: "Smart hashtag research and social media optimization",
+            category: .creative,
+            logoURL: nil,
+            rating: 4.4,
+            reviewCount: 92,
+            price: .free,
+            tags: ["Hashtags", "Optimization", "Research"],
+            isRecommended: false,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 8),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        // More Finance Agents
+        Agent(
+            id: "agent-13",
+            name: "CryptoAnalyzer",
+            description: "Cryptocurrency market analysis and portfolio tracking",
+            category: .finance,
+            logoURL: nil,
+            rating: 4.3,
+            reviewCount: 67,
+            price: .subscription(15, .monthly),
+            tags: ["Crypto", "Portfolio", "Analysis"],
+            isRecommended: false,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 14),
+            updatedAt: Date().addingTimeInterval(-86400 * 3)
+        ),
+        
+        Agent(
+            id: "agent-14",
+            name: "TaxHelper AI",
+            description: "Automated tax preparation and optimization assistant",
+            category: .finance,
+            logoURL: nil,
+            rating: 4.7,
+            reviewCount: 156,
+            price: .oneTime(29),
+            tags: ["Tax", "Preparation", "Optimization"],
+            isRecommended: true,
+            isBestPerforming: true,
+            createdAt: Date().addingTimeInterval(-86400 * 40),
+            updatedAt: Date().addingTimeInterval(-86400 * 2)
+        ),
+        
+        // More Marketing Agents
+        Agent(
+            id: "agent-15",
+            name: "EmailCampaign Pro",
+            description: "Advanced email marketing automation and analytics",
+            category: .marketing,
+            logoURL: nil,
+            rating: 4.6,
+            reviewCount: 123,
+            price: .subscription(22, .monthly),
+            tags: ["Email", "Automation", "Analytics"],
+            isRecommended: true,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 28),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        Agent(
+            id: "agent-16",
+            name: "AdOptimizer",
+            description: "AI-driven ad campaign optimization across all platforms",
+            category: .marketing,
+            logoURL: nil,
+            rating: 4.8,
+            reviewCount: 87,
+            price: .subscription(35, .monthly),
+            tags: ["Ads", "Optimization", "Campaigns"],
+            isRecommended: false,
+            isBestPerforming: true,
+            createdAt: Date().addingTimeInterval(-86400 * 16),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        // More Education Agents
+        Agent(
+            id: "agent-17",
+            name: "LanguageTutor AI",
+            description: "Personalized language learning with conversation practice",
+            category: .education_dev,
+            logoURL: nil,
+            rating: 4.9,
+            reviewCount: 245,
+            price: .subscription(14, .monthly),
+            tags: ["Language", "Learning", "Conversation"],
+            isRecommended: true,
+            isBestPerforming: true,
+            createdAt: Date().addingTimeInterval(-86400 * 33),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        Agent(
+            id: "agent-18",
+            name: "SkillBuilder",
+            description: "Professional skill development and career planning assistant",
+            category: .education_dev,
+            logoURL: nil,
+            rating: 4.5,
+            reviewCount: 108,
+            price: .subscription(16, .monthly),
+            tags: ["Skills", "Career", "Development"],
+            isRecommended: false,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 21),
+            updatedAt: Date().addingTimeInterval(-86400 * 2)
+        ),
+        
+        // More Travel Agents
+        Agent(
+            id: "agent-19",
+            name: "LocalGuide AI",
+            description: "Discover hidden gems and local experiences in any city",
+            category: .travel,
+            logoURL: nil,
+            rating: 4.4,
+            reviewCount: 76,
+            price: .free,
+            tags: ["Local", "Experiences", "Discovery"],
+            isRecommended: true,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 11),
+            updatedAt: Date().addingTimeInterval(-86400 * 1)
+        ),
+        
+        Agent(
+            id: "agent-20",
+            name: "BudgetTravel Pro",
+            description: "Find the best deals and budget-friendly travel options",
+            category: .travel,
+            logoURL: nil,
+            rating: 4.6,
+            reviewCount: 134,
+            price: .subscription(8, .monthly),
+            tags: ["Budget", "Deals", "Savings"],
+            isRecommended: false,
+            isBestPerforming: false,
+            createdAt: Date().addingTimeInterval(-86400 * 19),
+            updatedAt: Date().addingTimeInterval(-86400 * 2)
         )
     ]
 }

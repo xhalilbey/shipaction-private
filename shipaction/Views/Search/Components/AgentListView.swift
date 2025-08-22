@@ -19,7 +19,10 @@ struct AgentListView: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 16) {
+            LazyVGrid(columns: [
+                GridItem(.flexible(), spacing: 12),
+                GridItem(.flexible(), spacing: 12)
+            ], spacing: 16) {
                 ForEach(agents) { agent in
                     AgentCard(
                         agent: agent,

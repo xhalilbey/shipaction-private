@@ -2,7 +2,7 @@
 //  MainView.swift
 //  payaction-ios
 //
-//  Created by Halil Eren on 14.06.2025.
+//  Created b2y Halil Eren on 14.06.2025.
 //
 
 import SwiftUI

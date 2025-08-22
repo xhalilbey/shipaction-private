@@ -21,8 +21,9 @@ struct CategoryRow: View {
         NavigationLink(value: category) {
             ZStack {
                 if isSelected, let ns = namespace {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(categoryCardBackground)
+                    // Simple turquoise background for selected category
+                    Color(hex: "1FB8CD")
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         .matchedGeometryEffect(id: "row-bg-\(category.rawValue)", in: ns)
                 }
                 
@@ -132,11 +133,11 @@ struct CategoryRow: View {
                     endPoint: .bottomTrailing
                 ) : 
                 LinearGradient(
-                    colors: [Color.black.opacity(0.12)],
+                    colors: [Color.gray.opacity(0.3)],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 ),
-                lineWidth: colorScheme == .dark ? 1 : 0.5
+                lineWidth: colorScheme == .dark ? 1 : 1
             )
     }
     
@@ -163,45 +164,50 @@ struct CategoryRow: View {
     
     // MARK: - Colors
     
-    private var modernCardBackground: Color {
-        colorScheme == .dark ? 
-            Color(hex: "1D1C1C") : 
-            AppConstants.Colors.lightCardSecondary
+    private var modernCardBackground: some ShapeStyle {
+        if colorScheme == .dark {
+            return AnyShapeStyle(Color(hex: "1D1C1C"))
+        } else {
+            // Use same dark color as "Hire an Agent" card
+            return AnyShapeStyle(Color(hex: "1D2426"))
+        }
     }
     
-    private var categoryCardBackground: Color {
-        colorScheme == .dark ? Color(hex: "A84B2F") : AppConstants.Colors.lightCardSecondary
+
+    
+    private var categoryIconForeground: some ShapeStyle {
+        // Always use white for both selected and unselected states, both light and dark mode
+        return AnyShapeStyle(Color.white)
     }
     
-    private var categoryIconForeground: Color {
-        colorScheme == .dark ? 
-            Color(hex: "1FB8CD") : 
-            Color.black.opacity(0.8)
-    }
+
     
     private var iconBackground: Color {
-        colorScheme == .dark ? 
-            Color.white.opacity(0.1) : 
-            Color.white.opacity(0.4)
+        // Use consistent color like AgentCard tokenBackground for both light and dark mode
+        Color.white.opacity(0.15)
     }
     
     private var iconStroke: Color {
-        colorScheme == .dark ? 
-            Color.white.opacity(0.2) : 
-            Color.white.opacity(0.6)
+        // Use consistent color like AgentCard tokenStroke for both light and dark mode
+        Color.white.opacity(0.25)
     }
     
     private var categoryTextColor: Color {
-        colorScheme == .dark ? 
-            Color.white : 
-            AppConstants.Colors.lightPrimaryText
+        if isSelected {
+            return Color.white // Always white on gradient background
+        }
+        // Use white text on dark background for both modes
+        return Color.white
     }
     
     private func trailingIndicatorColor(isSelected: Bool) -> Color {
         if isSelected {
-            return colorScheme == .dark ? Color(hex: "1FB8CD") : Color.black.opacity(0.8)
+            return Color.white // Always white on gradient background
         } else {
-            return colorScheme == .dark ? Color.white.opacity(0.7) : Color.black.opacity(0.6)
+            // Use white with opacity on dark background for both modes
+            return Color.white.opacity(0.7)
         }
     }
 }
+
+
