@@ -14,24 +14,42 @@ struct AgentListView: View {
     let category: AgentCategory
     let agents: [Agent]
     var namespace: Namespace.ID?
+    
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     
+    // MARK: - Category Filter State
+    @State private var selectedCategory: AgentCategory?
+    @State private var allAgents: [Agent] = []
+    
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: [
-                GridItem(.flexible(), spacing: 12),
-                GridItem(.flexible(), spacing: 12)
-            ], spacing: 16) {
-                ForEach(agents) { agent in
-                    AgentCard(
-                        agent: agent,
-                        onStartTapped: handleAgentStart,
-                        onDetailTapped: handleAgentDetail
-                    )
-                }
+        VStack(spacing: 0) {
+            // Category Filter Chips
+            if !availableCategories.isEmpty {
+                categoryFilterSection
+                    .padding(.top, 16)
+                    .padding(.bottom, 12)
+                    .background(backgroundColor)
             }
-            .padding(16)
+            
+            // Agent Grid
+            ScrollView {
+                LazyVGrid(columns: [
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12)
+                ], spacing: 16) {
+                    ForEach(filteredAgents) { agent in
+                        AgentCard(
+                            agent: agent,
+                            onStartTapped: handleAgentStart,
+                            onDetailTapped: handleAgentDetail
+                        )
+                        .frame(height: 240) // Fixed height for consistent grid layout
+                        .clipped() // Ensure content doesn't overflow fixed bounds
+                    }
+                }
+                .padding(16)
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -43,6 +61,9 @@ struct AgentListView: View {
         }
         .navigationBarBackButtonHidden(true)
         .background(backgroundColor)
+        .onAppear {
+            setupInitialData()
+        }
     }
     
     // MARK: - Actions
@@ -60,6 +81,44 @@ struct AgentListView: View {
     private func navigationBack() -> Bool { 
         dismiss()
         return true 
+    }
+    
+    // MARK: - Data Management
+    
+    private func setupInitialData() {
+        // Initialize with all sample agents and set the initial category
+        allAgents = Agent.sampleAgents
+        selectedCategory = category
+    }
+    
+    // MARK: - Computed Properties
+    
+    private var availableCategories: [(category: AgentCategory, count: Int)] {
+        let counts = Dictionary(grouping: allAgents, by: { $0.category })
+            .mapValues { $0.count }
+        return AgentCategory.allCases.compactMap { category in
+            if let count = counts[category], count > 0 {
+                return (category, count)
+            }
+            return nil
+        }.sorted { $0.count > $1.count }
+    }
+    
+    private var filteredAgents: [Agent] {
+        if let selectedCategory = selectedCategory {
+            return allAgents.filter { $0.category == selectedCategory }
+        } else {
+            return allAgents
+        }
+    }
+    
+    // MARK: - Category Filter Section
+    
+    private var categoryFilterSection: some View {
+        CategoryFilterChips(
+            categories: availableCategories,
+            selectedCategory: $selectedCategory
+        )
     }
     
     // MARK: - Subviews

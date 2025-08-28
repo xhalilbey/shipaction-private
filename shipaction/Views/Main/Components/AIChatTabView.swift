@@ -20,10 +20,8 @@ struct AIChatTabView: View {
     // MARK: - Animation State
     @State private var headerVisible = false
     @State private var firstCardVisible = false
-    @State private var secondCardVisible = false
     @State private var thirdCardVisible = false
     @State private var shine1: CGFloat = -0.2
-    @State private var shine2: CGFloat = -0.2
     @State private var shine3: CGFloat = -0.2
     
     // MARK: - Body
@@ -52,17 +50,6 @@ struct AIChatTabView: View {
                             value: firstCardVisible
                         )
                     
-                    createAgentHeroCard
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 180)
-                        .opacity(secondCardVisible ? 1 : 0)
-                        .offset(y: secondCardVisible ? 0 : 25)
-                        .scaleEffect(secondCardVisible ? 1 : 0.95)
-                        .animation(
-                            .spring(response: 0.65, dampingFraction: 0.8, blendDuration: 0.5),
-                            value: secondCardVisible
-                        )
-                        
                     selectAgentHeroCard
                         .frame(maxWidth: .infinity)
                         .frame(height: 180)
@@ -93,12 +80,6 @@ struct AIChatTabView: View {
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    withAnimation(.spring(response: 0.65, dampingFraction: 0.8)) {
-                    secondCardVisible = true
-                    }
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     withAnimation(.spring(response: 0.7, dampingFraction: 0.8)) {
                         thirdCardVisible = true
                     }
@@ -115,15 +96,6 @@ struct AIChatTabView: View {
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                withAnimation(
-                        .linear(duration: 3.0)
-                    .repeatForever(autoreverses: false)
-                    ) { 
-                        shine2 = 1.3 
-                    }
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
                 withAnimation(
                         .linear(duration: 2.8)
                     .repeatForever(autoreverses: false)
@@ -234,24 +206,16 @@ private extension AIChatTabView {
     
     // Three premium cards with continuous modern pattern
     var hireAgentHeroCard: some View {
-        AILargeHeroCard(
-            iconName: "briefcase.fill",
-            title: "Hire an Agent",
-            subtitle: "Start working with a specialist agent tailored to your needs",
-            background: AnyShapeStyle(Color(hex: "1D2426")),
-            shineProgress: shine1
-        )
-    }
-    
-    var createAgentHeroCard: some View {
-        AILargeHeroCard(
-            iconName: "plus.circle.fill",
-            title: "Create Your Agent",
-            subtitle: "Build a custom AI agent perfectly suited to your workflow",
-            background: AnyShapeStyle(Color(hex: "BADEDD")),
-            shineProgress: shine2,
-            prefersLightForeground: false
-        )
+        NavigationLink(destination: HiredAgentsView()) {
+            AILargeHeroCard(
+                iconName: "briefcase.fill",
+                title: "Hire an Agent",
+                subtitle: "Start working with a specialist agent tailored to your needs",
+                background: AnyShapeStyle(Color(hex: "1D2426")),
+                shineProgress: shine1
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
     }
     
     var selectAgentHeroCard: some View {
@@ -259,11 +223,7 @@ private extension AIChatTabView {
             iconName: "person.3.fill",
             title: "Choose an Agent",
             subtitle: "Pick an agent from your library and start right away",
-            background: AnyShapeStyle(LinearGradient(
-                colors: [Color(hex: "F0F0F0"), Color(hex: "E5E5E5")],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )),
+            background: AnyShapeStyle(Color(hex: "BADEDD")),
             shineProgress: shine3,
             prefersLightForeground: false
         )

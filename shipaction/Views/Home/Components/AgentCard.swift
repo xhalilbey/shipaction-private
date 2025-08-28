@@ -130,9 +130,12 @@ struct AgentCard: View {
             Text(agent.category.displayName)
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(textPrimary)
+                .lineLimit(1)
+                .truncationMode(.tail)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
+        .frame(maxWidth: 100) // Fixed maximum width to prevent layout shifts
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(Color.clear) // Transparent background
@@ -202,7 +205,7 @@ struct AgentCard: View {
             isSaved.toggle()
             HapticFeedbackManager.shared.playSelection()
         }) {
-            Image(systemName: isSaved ? "star.fill" : "star")
+            Image(systemName: isSaved ? "briefcase.fill" : "briefcase")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(actionIconColor)
                 .frame(width: 36, height: 36)
@@ -210,7 +213,7 @@ struct AgentCard: View {
                 .shadow(color: colorScheme == .dark ? .black.opacity(0.1) : .clear, radius: 4, x: 0, y: 2)
         }
         .buttonStyle(PlainButtonStyle())
-        .accessibilityLabel(isSaved ? "Starred" : "Star")
+        .accessibilityLabel(isSaved ? "Added to briefcase" : "Add to briefcase")
     }
     
     // MARK: - Detail Button
@@ -270,98 +273,15 @@ struct AgentCard: View {
     
     // MARK: - Card Background
     private var cardBackgroundView: some View {
-        RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .overlay(
-                // Balanced color distribution - Red, Green, Yellow, Orange prominent
-                ZStack {
-                    // Base subtle background
-                    Color(hex: "1E1B4B").opacity(0.3) // Deep purple base
-                    
-                    // RED - Top area (more prominent)
-                    RadialGradient(
-                        colors: [
-                            Color(hex: "DC2626").opacity(0.8), // Strong red
-                            Color(hex: "EF4444").opacity(0.4),
-                            Color.clear
-                        ],
-                        center: UnitPoint(x: 0.7, y: 0.15),
-                        startRadius: 20,
-                        endRadius: 180
-                    )
-                    
-                    // ORANGE - Right side (prominent)
-                    RadialGradient(
-                        colors: [
-                            Color(hex: "EA580C").opacity(0.7), // Strong orange
-                            Color(hex: "F97316").opacity(0.5),
-                            Color.clear
-                        ],
-                        center: UnitPoint(x: 0.85, y: 0.5),
-                        startRadius: 25,
-                        endRadius: 170
-                    )
-                    
-                    // YELLOW - Bottom right (prominent)
-                    RadialGradient(
-                        colors: [
-                            Color(hex: "CA8A04").opacity(0.8), // Strong yellow
-                            Color(hex: "EAB308").opacity(0.6),
-                            Color.clear
-                        ],
-                        center: UnitPoint(x: 0.75, y: 0.85),
-                        startRadius: 30,
-                        endRadius: 160
-                    )
-                    
-                    // GREEN - Bottom left (prominent)
-                    RadialGradient(
-                        colors: [
-                            Color(hex: "16A34A").opacity(0.8), // Strong green
-                            Color(hex: "22C55E").opacity(0.5),
-                            Color.clear
-                        ],
-                        center: UnitPoint(x: 0.25, y: 0.8),
-                        startRadius: 35,
-                        endRadius: 175
-                    )
-                    
-                    // Purple accent - Top left (supporting)
-                    RadialGradient(
-                        colors: [
-                            Color(hex: "7C3AED").opacity(0.6), // Supporting purple
-                            Color.clear
-                        ],
-                        center: UnitPoint(x: 0.15, y: 0.2),
-                        startRadius: 15,
-                        endRadius: 120
-                    )
-                    
-                    // Blue accent - Left side (supporting)
-                    RadialGradient(
-                        colors: [
-                            Color(hex: "2563EB").opacity(0.5), // Supporting blue
-                            Color.clear
-                        ],
-                        center: UnitPoint(x: 0.1, y: 0.6),
-                        startRadius: 20,
-                        endRadius: 130
-                    )
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            )
-            .overlay(innerGlowOverlay)
-            .overlay(borderGlowOverlay)
+        Image("agentcard")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .shadow(
-                color: colorScheme == .dark ? Color.black.opacity(0.3) : Color.clear,
+                color: Color.black.opacity(0.1),
                 radius: isPressed ? 4 : 8,
                 x: 0,
                 y: isPressed ? 2 : 4
-            )
-            .shadow(
-                color: colorScheme == .dark ? Color.white.opacity(0.15) : Color.clear,
-                radius: 3,
-                x: 0,
-                y: -1
             )
     }
     

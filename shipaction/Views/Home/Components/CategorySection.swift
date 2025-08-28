@@ -49,7 +49,8 @@ struct CategorySection: View {
                             },
                             onDetailTapped: onAgentDetail
                         )
-                        .frame(width: 200) // Increased width to properly display all content including star ratings
+                        .frame(width: 200, height: 240) // Fixed dimensions for consistent positioning
+                        .clipped() // Ensure content doesn't overflow fixed bounds
                     }
                 }
                 .padding(.horizontal, 20)

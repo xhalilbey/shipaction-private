@@ -382,7 +382,7 @@ struct StandardButton: View {
                 UnifiedButton(
                     title: "With Icon",
                     style: .primary,
-                    icon: "star.fill"
+                    icon: "briefcase.fill"
                 ) {}
                 
                 UnifiedButton(
